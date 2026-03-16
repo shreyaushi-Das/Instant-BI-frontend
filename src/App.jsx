@@ -6,7 +6,7 @@ import {
 import {
   Send, Database, LayoutDashboard, MessageSquare,
   Upload, Loader2, AlertCircle, TrendingUp, Info, ChevronRight, Download,
-  Zap, BarChart2, ArrowRight, Github, Twitter, Linkedin, Sun, Moon,
+  Zap, BarChart2, ArrowRight, Github, Twitter, Linkedin, Sun, Moon,Share2,
   Maximize2, X, Menu, PanelLeftClose
 } from "lucide-react";
 
@@ -814,6 +814,43 @@ function ToolPage({ onBack, dark, onToggleDark }) {
               >
                 <Download size={13} /> Download Report
               </button>
+
+
+              {/* Share Report button */}
+              {/* Share Report button */}
+<button
+  onClick={() => {
+    const shareData = {
+      title: dashboard?.title || "InstantBI Report",
+      text: dashboard?.summary || "Check out this analytics report generated with InstantBI",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(err => console.error("Share failed:", err));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Report link copied to clipboard!");
+    }
+  }}
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 7,
+    padding: "10px 18px",
+    background: t.exportBtn,
+    border: `1.5px solid ${t.exportBtnBorder}`,
+    borderRadius: 12,
+    fontSize: 12,
+    fontWeight: 700,
+    color: t.exportBtnText,
+    cursor: "pointer",
+    fontFamily: "'Syne', sans-serif",
+    transition: "all 0.2s"
+  }}
+>
+  <Share2 size={13} /> Share Report
+</button>
             </div>
 
             {/* Insights */}
