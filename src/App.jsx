@@ -15,7 +15,6 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const COLORS = ["#6366f1", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
 
-
 // ── Theme tokens ───────────────────────────────────────────────────────────────
 const T = {
   light: {
@@ -381,7 +380,6 @@ function ToolPage({ onBack, dark, onToggleDark }) {
   const [dashboard, setDashboard]       = useState(null);
   const [sqlCode, setSqlCode]           = useState(null);
   const [tableData, setTableData]       = useState(null);
-  const [tableSearch, setTableSearch] = useState("");
   const [messages, setMessages]         = useState([]);
   const [error, setError]               = useState(null);
   // follow-up: keep full conversation history for context
@@ -418,15 +416,6 @@ function ToolPage({ onBack, dark, onToggleDark }) {
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
-
-
-  const filteredRows =
-  tableData?.rows?.filter((row) =>
-    Object.values(row)
-      .join(" ")
-      .toLowerCase()
-      .includes(tableSearch.toLowerCase())
-  ) || [];
 
   // ── Upload via POST /upload ────────────────────────────────────────────────
   const handleFileUpload = async (e) => {
@@ -957,20 +946,6 @@ function ToolPage({ onBack, dark, onToggleDark }) {
                 <p style={{ fontSize: 9, color: t.text4, padding: "10px 16px", borderBottom: `1px solid ${t.border}`, fontFamily: "monospace", textTransform: "uppercase", letterSpacing: 2 }}>
                   Results — {tableData.rows.length} rows
                 </p>
-                <div style={{ padding: "8px 16px", borderBottom: `1px solid ${t.border}` }}>
-  <input
-    placeholder="Search table..."
-    value={tableSearch}
-    onChange={(e) => setTableSearch(e.target.value)}
-    style={{
-      width: "100%",
-      padding: "6px 10px",
-      borderRadius: 8,
-      border: `1px solid ${t.border}`,
-      fontSize: 12
-    }}
-  />
-</div>
                 <div style={{ overflowX: "auto", maxHeight: 288 }}>
                   <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
                     <thead>
@@ -981,7 +956,7 @@ function ToolPage({ onBack, dark, onToggleDark }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredRows.slice(0, 100).map((row, i) => (
+                      {tableData.rows.slice(0, 100).map((row, i) => (
                         <tr key={i} style={{ borderTop: `1px solid ${t.border}` }}
                           onMouseEnter={e => e.currentTarget.style.background = t.bg3}
                           onMouseLeave={e => e.currentTarget.style.background = ""}
