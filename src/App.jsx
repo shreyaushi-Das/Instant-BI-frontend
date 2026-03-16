@@ -6,7 +6,7 @@ import {
 import {
   Send, Database, LayoutDashboard, MessageSquare,
   Upload, Loader2, AlertCircle, TrendingUp, Info, ChevronRight, Download,
-  Zap, BarChart2, ArrowRight, Github, Twitter, Linkedin, Sun, Moon,Share2,
+  Zap, BarChart2, ArrowRight, Github, Twitter, Linkedin, Sun, Moon,Share2,Copy,
   Maximize2, X, Menu, PanelLeftClose
 } from "lucide-react";
 
@@ -878,7 +878,67 @@ function ToolPage({ onBack, dark, onToggleDark }) {
         {sqlCode && (
           <div style={{ padding: isMobile ? "0 16px 56px" : "0 40px 48px", maxWidth: 1160, margin: "0 auto" }}>
             <div style={{ background: dark ? "#0d0b1a" : "#1a1a2e", borderRadius: 16, padding: "18px 20px", overflowX: "auto", marginBottom: 16 }}>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+
               <p style={{ fontSize: 9, color: "#6b69a0", marginBottom: 8, fontFamily: "monospace", textTransform: "uppercase", letterSpacing: 2 }}>Generated SQL</p>
+
+              <div style={{ display: "flex", gap: 8 }}>
+
+<button
+  onClick={() => {
+    navigator.clipboard.writeText(sqlCode);
+    alert("SQL copied to clipboard!");
+  }}
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    padding: "4px 10px",
+    borderRadius: 8,
+    fontSize: 10,
+    fontWeight: 700,
+    cursor: "pointer",
+    background: "#6366f1",
+    border: "none",
+    color: "white"
+  }}
+>
+  <Copy size={12}/> Copy SQL
+</button>
+
+<button
+  onClick={() => {
+    const blob = new Blob([sqlCode], { type: "text/sql" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "generated_query.sql";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }}
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    padding: "4px 10px",
+    borderRadius: 8,
+    fontSize: 10,
+    fontWeight: 700,
+    cursor: "pointer",
+    background: "#10b981",
+    border: "none",
+    color: "white"
+  }}
+>
+  <Download size={12}/> Download SQL
+</button>
+
+</div>
+
+</div>
               <pre style={{ color: "#a5f3a0", fontSize: 13, fontFamily: "monospace", whiteSpace: "pre-wrap", margin: 0 }}>{sqlCode}</pre>
             </div>
             {tableData?.rows?.length > 0 && (
